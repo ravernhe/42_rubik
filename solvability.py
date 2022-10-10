@@ -54,4 +54,4 @@ def is_solvable(map):
                 if step_zero(i, j, map) % 2 != moves % 2:
                     print("The map requested is not solvable.")
                     exit()
-                return
+                return grid_cpy
