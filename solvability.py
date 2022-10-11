@@ -13,7 +13,7 @@ def swap_numbers(i, j, value, moves, size, grid):
     return grid, moves
 
 def step_zero(i, j, map):
-    for n in range(map["size"] * map["size"] - 1):
+    for n in range(map["size"] * map["size"]):
             if (map["grid"][n // map["size"]][n % map["size"]] == 0):
                 return abs(n // map["size"] - i) + abs(n % map["size"] - j)
 
