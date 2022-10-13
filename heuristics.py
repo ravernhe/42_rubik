@@ -12,34 +12,19 @@ class Heuristics:
         elif self.name != "manh":
             print("Heuristic function self.name was not found. Default used = manh")
         
-
-
-    # def manh(self, grid):
-    #     sum_dist = 0
-    #     for n in range(self.size * self.size):
-    #         value = self.solved_grid[n // self.size][n % self.size]
-    #         for k in range(self.size * self.size):
-    #             if  value == grid[k // self.size][k % self.size]:
-    #                 sum_dist += abs(n // self.size - k // self.size) + abs(n % self.size - k % self.size)
-    #     return sum_dist
-
     
     def manh(self, grid):
-        size = range(1, len(grid) ** 2)
+        size = range(1, len(grid))
         distances = [self.count_distance(num, grid) for num in size]
 
         return sum(distances)
 
 
     def count_distance(self, number, grid):
-        for y in range(self.size):
-            for x in range(self.size):
-                if grid[y][x] == number:
-                    position1 = [y, x]
-                if self.solved_grid[y][x] == number:
-                    position2 = [y, x]
+        position1 = grid.index(number)
+        position2 = self.solved_grid.index(number)
 
-        return abs(position2[0] - position1[0]) + abs(position2[1] - position1[1])
+        return abs(position2 // self.size - position1 // self.size) + abs(position2 % self.size - position1 % self.size)
 
 
     def nbmis(self, grid):

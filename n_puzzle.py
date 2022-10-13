@@ -10,10 +10,9 @@ from copy import deepcopy
 class Node(object):
     def __init__(self, grid):
         self.grid = grid
-        self.size = len(self.grid)
 
     def __repr__(self):
-        return str([n for row in self.grid for n in row])
+        return tuple(self.grid)
 
     def __hash__(self):
         return hash(self.__repr__())
@@ -21,12 +20,10 @@ class Node(object):
     def __eq__(self, other):
         return self.__hash__() == other.__hash__()
 
-    def nextnodes(self):
-        for n in range(self.size * self.size):
-            if (self.grid[n // self.size][n % self.size] == 0):
-                y, x = n // self.size, n % self.size
-                break
-        
+    def nextnodes(self, size):
+        zero = self.grid.index(0)
+        y, x = zero // size, zero % size
+
         up = (y - 1, x) 
         down = (y + 1, x)
         right = (y, x + 1)
@@ -34,9 +31,9 @@ class Node(object):
 
         arr = []
         for direction in (up, down, right, left):
-            if len(self.grid) - 1 >= direction[0] >= 0 and len(self.grid) - 1 >= direction[1] >= 0:
+            if size - 1 >= direction[0] >= 0 and size - 1 >= direction[1] >= 0:
                 tmp = deepcopy(self.grid)
-                tmp[direction[0]][direction[1]], tmp[y][x] = tmp[y][x], tmp[direction[0]][direction[1]]
+                tmp[size * direction[0] + direction[1]], tmp[size * y + x] = tmp[size * y + x], tmp[size * direction[0] + direction[1]]
                 arr.append(Node(tmp))
         return arr
 
@@ -44,9 +41,9 @@ class Node(object):
 
 class Solver:
     def __init__(self, grid, size, solved_grid, heuristic_name):
-        self.grid = grid
+        self.grid = [n for row in grid for n in row]
         self.size = size
-        self.solved_grid = solved_grid
+        self.solved_grid = [n for row in solved_grid for n in row]
         self.heuristic_name = heuristic_name
         self.heuristic = Heuristics(self.size, self.solved_grid, self.heuristic_name)
         
@@ -61,7 +58,7 @@ class Solver:
 
         min = float('inf')
 
-        for n in node.nextnodes():
+        for n in node.nextnodes(self.size):
             if n not in path:
                 path.add(n)
                 i = self.search(n, goal, g + 1, threshold, path)
