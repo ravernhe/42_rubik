@@ -1,0 +1,12 @@
+# This puzzle is NOT solvable BRULE EN ENFER
+3
+3 6 5 
+8 2 4 
+7 0 1 
+
+#(6) : pair | 0(1) : Impair  Avec swap
+#(7) : pair | 0(1) : Impair  Sans swap
+
+# 3 6 5 
+# 8 2 4 
+# 7 0 1 

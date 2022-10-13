@@ -5,7 +5,7 @@ def in_bound(i, j, border):
 
 def swap_numbers(i, j, value, moves, size, grid):
     if not grid[i][j] == value:
-        for n in range(size * size - 1) :
+        for n in range(size * size) :
             if (grid[n // size][n % size] == value):
                 grid[i][j], grid[n // size][n % size] = grid[n // size][n % size], grid[i][j]
                 moves += 1

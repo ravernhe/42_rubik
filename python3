@@ -1,0 +1,2 @@
+usage: 42_generator.py [-h] [-s] [-u] [-i ITERATIONS] size
+42_generator.py: error: unrecognized arguments: n_puzzle.py
