@@ -1,8 +1,8 @@
-from os import stat
+from collections import deque
 import sys
 from heuristics import Heuristics
 from parser import FileParser
-from solvability import is_solvable, in_bound
+from solvability import is_solvable
 import time
 from copy import deepcopy
 
@@ -10,8 +10,9 @@ from copy import deepcopy
 class Node(object):
     def __init__(self, grid):
         self.grid = grid
-    
-    def __repr__(self):# aie caramba
+        self.size = len(self.grid)
+
+    def __repr__(self):
         return str([n for row in self.grid for n in row])
 
     def __hash__(self):
@@ -20,11 +21,10 @@ class Node(object):
     def __eq__(self, other):
         return self.__hash__() == other.__hash__()
 
-    def nextnodes(self): # a faire
-        size = len(self.grid)
-        for n in range(size * size):
-            if (self.grid[n // size][n % size] == 0):
-                y, x = n // size, n % size
+    def nextnodes(self):
+        for n in range(self.size * self.size):
+            if (self.grid[n // self.size][n % self.size] == 0):
+                y, x = n // self.size, n % self.size
                 break
         
         up = (y - 1, x) 
@@ -49,11 +49,9 @@ class Solver:
         self.solved_grid = solved_grid
         self.heuristic_name = heuristic_name
         self.heuristic = Heuristics(self.size, self.solved_grid, self.heuristic_name)
-
-
+        
     def search(self, node, goal, g, threshold, path):
-
-        f = g + self.heuristic.heuristic_func(node.grid)
+        f = g + self.heuristic.function(node.grid)
         
         if f > threshold:
             return f
@@ -66,18 +64,18 @@ class Solver:
         for n in node.nextnodes():
             if n not in path:
                 path.add(n)
-            i = self.search(n, goal, g + 1, threshold, path)
-            if i == "FOUND":
-                return "FOUND"
-            if i < min:
-                min = i
+                i = self.search(n, goal, g + 1, threshold, path)
+                if i == "FOUND":
+                    return "FOUND"
+                if i < min:
+                    min = i
         return min
 
     
     def solve(self):
         initial_node = Node(self.grid)
         goal_node = Node(self.solved_grid)
-        threshold = self.heuristic.heuristic_func(initial_node.grid)
+        threshold = self.heuristic.function(initial_node.grid)
         while True:
             path = set([initial_node])
             i = self.search(initial_node, goal_node, 0, threshold, path)
@@ -85,9 +83,9 @@ class Solver:
                 print(len(path))
                 print("TATATATA  TA  TA  TA TATA")
                 return
+            elif i == float("inf"):
+                return None
             threshold = i
-        print("The IMPOSSIBLE ONE")
-
 
 
 def npuzzle(file_name, heuristic_name):
@@ -102,7 +100,7 @@ def npuzzle(file_name, heuristic_name):
 if __name__ == "__main__":
     args = sys.argv
     if len(args) < 2 or len(args) > 3:
-        raise Exception("python3 n_puzzle.py [self.map_name] optional: [heuristic_function_name]")
+        raise Exception("python3 n_puzzle.py [self.map_name] optional: [functiontion_name]")
     file_name = args[1]
     heuristic_name = "manh"
     if len(args) == 3:
