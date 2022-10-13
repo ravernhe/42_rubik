@@ -4,7 +4,6 @@ from heuristics import Heuristics
 from parser import FileParser
 from solvability import is_solvable
 import time
-from copy import deepcopy
 
 
 class Node(object):
@@ -32,7 +31,7 @@ class Node(object):
         arr = []
         for direction in (up, down, right, left):
             if size - 1 >= direction[0] >= 0 and size - 1 >= direction[1] >= 0:
-                tmp = deepcopy(self.grid)
+                tmp = self.grid[:]
                 tmp[size * direction[0] + direction[1]], tmp[size * y + x] = tmp[size * y + x], tmp[size * direction[0] + direction[1]]
                 arr.append(Node(tmp))
         return arr
@@ -46,6 +45,9 @@ class Solver:
         self.solved_grid = [n for row in solved_grid for n in row]
         self.heuristic_name = heuristic_name
         self.heuristic = Heuristics(self.size, self.solved_grid, self.heuristic_name)
+
+        self.solved_path = []
+
         
     def search(self, node, goal, g, threshold, path):
         f = g + self.heuristic.function(node.grid)
@@ -54,7 +56,7 @@ class Solver:
             return f
    
         if node == goal:
-            return "FOUND"
+            return True
 
         min = float('inf')
 
@@ -62,8 +64,9 @@ class Solver:
             if n not in path:
                 path.add(n)
                 i = self.search(n, goal, g + 1, threshold, path)
-                if i == "FOUND":
-                    return "FOUND"
+                if i == True:
+                    self.solved_path.append(n.grid)
+                    return True
                 if i < min:
                     min = i
         return min
@@ -76,9 +79,13 @@ class Solver:
         while True:
             path = set([initial_node])
             i = self.search(initial_node, goal_node, 0, threshold, path)
-            if i == "FOUND":
-                print(len(path))
-                print("TATATATA  TA  TA  TA TATA")
+            if i == True:
+                self.solved_path.reverse()
+                for g in self.solved_path:
+                    for i in range(self.size):
+                        print(g[i * self.size:(i + 1) * self.size]) #(i+1)* size
+                    print("")
+                print(f"Solved in {len(self.solved_path)} moves")
                 return
             elif i == float("inf"):
                 return None

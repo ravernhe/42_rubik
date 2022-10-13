@@ -7,8 +7,8 @@ class Heuristics:
         self.function = self.manh
         if self.name == "nbmis":
             self.function = self.nbmis
-        elif self.name == "nbmis_row_col":
-            self.function = self.nbmis_row_col
+        # elif self.name == "nbmis_row_col":
+            # self.function = self.nbmis_row_col
         elif self.name != "manh":
             print("Heuristic function self.name was not found. Default used = manh")
         
@@ -29,16 +29,7 @@ class Heuristics:
 
     def nbmis(self, grid):
         sum_miss = 0
-        for n in range(self.size * self.size):
-            if  self.solved_grid[n // self.size][n % self.size] != grid[n // self.size][n % self.size]:
+        for n in range(len(grid)):
+            if  self.solved_grid[n] != grid[n]:
                 sum_miss += 1
         return sum_miss
-
-    def nbmis_row_col(self, grid):
-        sum_miss_row_col = 0
-        for n in range(self.size * self.size):
-            if  self.solved_grid[n // self.size][n % self.size] not in grid[n // self.size]:
-                sum_miss_row_col += 1
-            if  self.solved_grid[n // self.size][n % self.size] not in [grid[y][n % self.size] for y in range(self.size)]:
-                sum_miss_row_col += 1
-        return sum_miss_row_col
