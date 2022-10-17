@@ -1,4 +1,6 @@
+import imp
 from heuristics import Heuristics
+from b_factor import get_b_factor
 
 
 class Node(object):
@@ -79,9 +81,13 @@ class Solver:
                 self.solved_path.reverse()
                 for g in self.solved_path:
                     for i in range(self.size):
-                        print(g[i * self.size:(i + 1) * self.size]) #(i+1)* size
+                        print(g[i * self.size:(i + 1) * self.size])
                     print("")
                 print(f"Solved in {len(self.solved_path) - 1} moves")
+                b_factor = get_b_factor(self.size)
+                print(b_factor, len(self.solved_path) - 1)
+                print(f"Time complexity = {b_factor ** (len(self.solved_path) - 1)}")
+                print(f"Space complexity = {b_factor * (len(self.solved_path) - 1)}")
                 return
             elif i == float("inf"):
                 return None
