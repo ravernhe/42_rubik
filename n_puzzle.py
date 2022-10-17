@@ -10,21 +10,25 @@ def npuzzle(file_name, heuristic_name, search_type):
     parser = FileParser(file_name)
     parser.parse()
     solved_grid = is_solvable(parser.map)
-    if search_type == "ida-star":
+    if search_type == 1:
         solution = ida_solver(parser.map["grid"], parser.map["size"], solved_grid, heuristic_name)
     else:
         solution = other_solver(parser.map["grid"], parser.map["size"], solved_grid, heuristic_name, search_type)
     start = time.time()
     solution.solve()
-    print(time.time() - start)
+    print("Solved in ", "%.4f" % (time.time() - start), "seconds")
 
 if __name__ == "__main__":
     args = sys.argv
-    if len(args) < 2 or len(args) > 3:
-        raise Exception("python3 n_puzzle.py [self.map_name] optional: [functiontion_name]")
+    if len(args) != 2:
+        raise Exception("python3 n_puzzle.py [map_name]")
     file_name = args[1]
-    heuristic_name = "manh"
-    search_type = "ida-star"
-    if len(args) == 3:
-        heuristic_name = args[2]
-    npuzzle(file_name, heuristic_name, search_type)
+    search_type = 0
+    heuristic_name = 0
+
+    while search_type not in ["1", "2", "3", "4"]:
+        search_type = input("\n\nSelect your search algorithm:\n1. ida*\n2. a*\n3. greedy\n4. uniform\n\nYour choice : ")
+    while heuristic_name not in ["1", "2", "3"]:
+        heuristic_name = input("\n\nSelect your heuristic function:\n1. Manhattan distance\n2. Euclidean distance\n3. Hamming distance\n\nYour choice : ")
+
+    npuzzle(file_name, int(heuristic_name), int(search_type))

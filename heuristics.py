@@ -7,13 +7,12 @@ class Heuristics:
         self.size = size
         self.solved_grid = solved_grid
         self.name = name
-        self.function = self.manh
-        if self.name == "nbmis":
-            self.function = self.nbmis
-        elif self.name == "eucl":
+        if self.name == 1:
+            self.function = self.manh
+        elif self.name == 2:
             self.function = self.eucl
-        elif self.name != "manh":
-            print("Heuristic function self.name was not found. Default used = manh")
+        elif self.name == 3:
+            self.function = self.nbmis
         
     
     def count_manh_distance(self, number, grid):

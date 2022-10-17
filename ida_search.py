@@ -1,9 +1,4 @@
-from collections import deque
-import sys
 from heuristics import Heuristics
-from parser import FileParser
-from solvability import is_solvable
-import time
 
 
 class Node(object):
@@ -80,12 +75,13 @@ class Solver:
             path = set([initial_node])
             i = self.search(initial_node, goal_node, 0, threshold, path)
             if i == True:
+                self.solved_path.append(self.grid)
                 self.solved_path.reverse()
                 for g in self.solved_path:
                     for i in range(self.size):
                         print(g[i * self.size:(i + 1) * self.size]) #(i+1)* size
                     print("")
-                print(f"Solved in {len(self.solved_path)} moves")
+                print(f"Solved in {len(self.solved_path) - 1} moves")
                 return
             elif i == float("inf"):
                 return None

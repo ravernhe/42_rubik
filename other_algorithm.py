@@ -1,21 +1,16 @@
-import sys
 from heuristics import Heuristics
-from parser import FileParser
-from solvability import is_solvable, in_bound
-import time
-from copy import deepcopy
 import heapq
 
 
 class Node(object):
 
-    def __init__(self, grid, cost=0, h=0, search_type="a-star", parent=None):
+    def __init__(self, grid, cost=0, h=0, search_type=2, parent=None):
         self.grid = grid
         self.cost = cost
         self.parent = parent
-        if search_type == "greedy":
+        if search_type == 3:
             self.f = h
-        elif search_type == "uniform":
+        elif search_type == 4:
             self.f = self.cost
         else :
             self.f = self.cost + h
@@ -52,13 +47,28 @@ class Node(object):
          
 
 class Solver:
-    def __init__(self, grid, size, solved_grid, heuristic_name, search_type="a-star"):
+    def __init__(self, grid, size, solved_grid, heuristic_name, search_type):
         self.grid = [n for row in grid for n in row]
         self.size = size
         self.solved_grid = [n for row in solved_grid for n in row]
         self.heuristic_name = heuristic_name
         self.heuristic = Heuristics(self.size, self.solved_grid, self.heuristic_name)
         self.search_type = search_type
+
+
+    def print_solution(self, node):
+        path = []
+        while node.parent:
+            path.append(node.grid)
+            node = node.parent
+        path.append(self.grid)
+        path.reverse()
+        for g in path:
+            for i in range(self.size):
+                print(g[i * self.size:(i + 1) * self.size]) #(i+1)* size
+            print("")
+        print(f"Solved in {len(path) - 1} moves")
+        return
 
     def solve(self):
         opened = set()
@@ -70,15 +80,14 @@ class Solver:
         opened.add(initial_node)
         openHeap.append((0, initial_node))
 
-        i = -1
         f = self.heuristic.function(initial_node.grid)
         while len(opened) > 0:
             node = heapq.heappop(openHeap)[1]
             opened.remove(node)
             closed.add(node)
             if node == goal_node:
-                print(f"Win en {i} iteration")
-                return node
+                self.print_solution(node)
+                return
 
             for current in node.nextnodes(self.size, self.heuristic, self.search_type):
                 not_closed = False
