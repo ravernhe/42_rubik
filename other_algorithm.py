@@ -13,7 +13,6 @@ class Node(object):
         self.grid = grid
         self.cost = cost
         self.parent = parent
-        self.onlist = 0
         if search_type == "greedy":
             self.f = h
         elif search_type == "uniform":
@@ -74,11 +73,6 @@ class Solver:
         i = -1
         f = self.heuristic.function(initial_node.grid)
         while len(opened) > 0:
-            i += 1
-            if i == 2000000:
-                print(f"Fin d'execution plus de {i} iterations")
-                exit()
-            # node = min(opened)
             node = heapq.heappop(openHeap)[1]
             opened.remove(node)
             closed.add(node)
@@ -100,25 +94,3 @@ class Solver:
                             opened.add(current)
                             heapq.heappush(openHeap, (current.f, current))
                             closed.remove(current)
-            
-
-
-def npuzzle(file_name, heuristic_name, search_type):
-    parser = FileParser(file_name)
-    parser.parse()
-    solved_grid = is_solvable(parser.map)
-    solution = Solver(parser.map["grid"], parser.map["size"], solved_grid, heuristic_name, search_type)
-    start = time.time()
-    solution.solve()
-    print(time.time() - start)
-
-if __name__ == "__main__":
-    args = sys.argv
-    if len(args) < 2 or len(args) > 3:
-        raise Exception("python3 n_puzzle.py [self.map_name] optional: [functiontion_name]")
-    file_name = args[1]
-    heuristic_name = "manh"
-    search_type = "aaaaaaaaaaaaaa"
-    if len(args) == 3:
-        heuristic_name = args[2]
-    npuzzle(file_name, heuristic_name, search_type)

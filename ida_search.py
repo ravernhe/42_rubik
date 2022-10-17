@@ -90,23 +90,3 @@ class Solver:
             elif i == float("inf"):
                 return None
             threshold = i
-
-
-def npuzzle(file_name, heuristic_name):
-    parser = FileParser(file_name)
-    parser.parse()
-    solved_grid = is_solvable(parser.map)
-    solution = Solver(parser.map["grid"], parser.map["size"], solved_grid, heuristic_name)
-    start = time.time()
-    solution.solve()
-    print(time.time() - start)
-
-if __name__ == "__main__":
-    args = sys.argv
-    if len(args) < 2 or len(args) > 3:
-        raise Exception("python3 n_puzzle.py [self.map_name] optional: [functiontion_name]")
-    file_name = args[1]
-    heuristic_name = "manh"
-    if len(args) == 3:
-        heuristic_name = args[2]
-    npuzzle(file_name, heuristic_name)
