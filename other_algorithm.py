@@ -1,4 +1,3 @@
-from b_factor import get_b_factor
 from heuristics import Heuristics
 import heapq
 
@@ -68,10 +67,9 @@ class Solver:
         path.reverse()
         for g in path:
             for i in range(self.size):
-                print(g[i * self.size:(i + 1) * self.size]) #(i+1)* size
+                print(g[i * self.size:(i + 1) * self.size])
             print("")
         print(f"Solved in {len(path) - 1} moves")
-        b_factor = get_b_factor(self.size)
         print(f"Time complexity = {self.time}")
         print(f"Space complexity = {self.space}")
         return

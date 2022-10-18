@@ -1,6 +1,4 @@
-import imp
 from heuristics import Heuristics
-from b_factor import get_b_factor
 
 class Node(object):
     def __init__(self, grid):
@@ -30,7 +28,6 @@ class Node(object):
                 tmp = self.grid[:]
                 tmp[size * direction[0] + direction[1]], tmp[size * y + x] = tmp[size * y + x], tmp[size * direction[0] + direction[1]]
                 arr.append(Node(tmp))
-                space += 1
         return arr
 
 
@@ -58,8 +55,9 @@ class Solver:
             return True
 
         min = float('inf')
-
-        for n in node.nextnodes(self.size):
+        neighbours = node.nextnodes(self.size)
+        self.space += len(neighbours)
+        for n in neighbours:
             if n not in path:
                 path.add(n)
                 i = self.search(n, goal, g + 1, threshold, path)
@@ -86,9 +84,8 @@ class Solver:
                         print(g[i * self.size:(i + 1) * self.size])
                     print("")
                 print(f"Solved in {len(self.solved_path) - 1} moves")
-                b_factor = get_b_factor(self.size)
                 print(f"Time complexity = {self.time}")
-                print(f"Space complexity = {space}")
+                print(f"Space complexity = {self.space}")
                 return
             elif i == float("inf"):
                 return None
