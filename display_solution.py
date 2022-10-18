@@ -1,4 +1,3 @@
-from time import sleep
 import pygame
 
 def draw_tiles(window, grid, size):
@@ -33,7 +32,14 @@ def draw_solution(path, size):
         draw_tiles(window, grid, size)
         pygame.display.flip()
         sleep(0.25)
+
+    pygame.draw.rect(window, (0, 255, 0), (0, 0, 100 * size, 100 * size), 5)
+    pygame.display.flip()
+    pygame.display.set_caption(f"{size}x{size} Puzzle - SOLVED")
     while True:
-        for i in pygame.event.get():
-            if i.type == pygame.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    exit()
