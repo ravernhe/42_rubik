@@ -2,7 +2,6 @@ import imp
 from heuristics import Heuristics
 from b_factor import get_b_factor
 
-
 class Node(object):
     def __init__(self, grid):
         self.grid = grid
@@ -31,6 +30,7 @@ class Node(object):
                 tmp = self.grid[:]
                 tmp[size * direction[0] + direction[1]], tmp[size * y + x] = tmp[size * y + x], tmp[size * direction[0] + direction[1]]
                 arr.append(Node(tmp))
+                space += 1
         return arr
 
 
@@ -42,13 +42,15 @@ class Solver:
         self.solved_grid = [n for row in solved_grid for n in row]
         self.heuristic_name = heuristic_name
         self.heuristic = Heuristics(self.size, self.solved_grid, self.heuristic_name)
+        self.time = 0
+        self.space = 0
 
         self.solved_path = []
 
         
     def search(self, node, goal, g, threshold, path):
         f = g + self.heuristic.function(node.grid)
-        
+        self.time += 1
         if f > threshold:
             return f
    
@@ -85,9 +87,8 @@ class Solver:
                     print("")
                 print(f"Solved in {len(self.solved_path) - 1} moves")
                 b_factor = get_b_factor(self.size)
-                print(b_factor, len(self.solved_path) - 1)
-                print(f"Time complexity = {b_factor ** (len(self.solved_path) - 1)}")
-                print(f"Space complexity = {b_factor * (len(self.solved_path) - 1)}")
+                print(f"Time complexity = {self.time}")
+                print(f"Space complexity = {space}")
                 return
             elif i == float("inf"):
                 return None

@@ -55,6 +55,8 @@ class Solver:
         self.heuristic_name = heuristic_name
         self.heuristic = Heuristics(self.size, self.solved_grid, self.heuristic_name)
         self.search_type = search_type
+        self.time = 0
+        self.space = 0
 
 
     def print_solution(self, node):
@@ -70,14 +72,15 @@ class Solver:
             print("")
         print(f"Solved in {len(path) - 1} moves")
         b_factor = get_b_factor(self.size)
-        print(f"Time complexity = {b_factor ** (len(path) - 1)}")
-        print(f"Space complexity = {b_factor * (len(path) - 1)}")
+        print(f"Time complexity = {self.time}")
+        print(f"Space complexity = {self.space}")
         return
 
     def solve(self):
         opened = set()
         openHeap = []
         closed = set()
+
 
         initial_node = Node(self.grid, 0, self.heuristic.function(self.grid), self.search_type, None)
         goal_node = Node(self.solved_grid)
@@ -86,6 +89,7 @@ class Solver:
 
         f = self.heuristic.function(initial_node.grid)
         while len(opened) > 0:
+            self.time += 1
             node = heapq.heappop(openHeap)[1]
             opened.remove(node)
             closed.add(node)
@@ -94,6 +98,7 @@ class Solver:
                 return
 
             for current in node.nextnodes(self.size, self.heuristic, self.search_type):
+                self.space += 1
                 not_closed = False
                 if not current in closed :
                     not_closed = True
