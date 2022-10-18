@@ -1,6 +1,6 @@
 from os import environ
-from play_npuzzle import play_npuzzle
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+from play_npuzzle import play_npuzzle
 import argparse
 from parser import FileParser
 from solvability import is_solvable
