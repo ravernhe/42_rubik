@@ -25,9 +25,12 @@ def draw_solution(path, size):
     pygame.display.set_caption(f"{size}x{size} Puzzle")
 
     for grid in path:
-        for i in pygame.event.get():
-            if i.type == pygame.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    exit()
         window.fill((255, 255, 255))
         draw_grid(window, size)
         draw_tiles(window, grid, size)
