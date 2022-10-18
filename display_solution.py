@@ -1,3 +1,4 @@
+from time import sleep
 import pygame
 
 def draw_tiles(window, grid, size):
