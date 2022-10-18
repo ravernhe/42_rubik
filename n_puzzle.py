@@ -31,8 +31,8 @@ def npuzzle(file_name, heuristic_name, search_type, play):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--map", help="[map_name]")
-    parser.add_argument("-play", "--play", help="-play to solve yourself", action="store_true")
+    parser.add_argument("-m", "--map", help="put a valid file")
+    parser.add_argument("-play", "--play", help="play to solve yourself", action="store_true")
     args = parser.parse_args()
 
     if not args.map:
