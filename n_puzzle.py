@@ -4,6 +4,7 @@ from solvability import is_solvable
 import time
 from ida_search import Solver as ida_solver
 from other_algorithm import Solver as other_solver
+from display_solution import draw_solution
 
 
 def npuzzle(file_name, heuristic_name, search_type):
@@ -15,8 +16,9 @@ def npuzzle(file_name, heuristic_name, search_type):
     else:
         solution = other_solver(parser.map["grid"], parser.map["size"], solved_grid, heuristic_name, search_type)
     start = time.time()
-    solution.solve()
+    path = solution.solve()
     print("Solved in ", "%.4f" % (time.time() - start), "seconds")
+    draw_solution(path, parser.map["size"])
 
 if __name__ == "__main__":
     args = sys.argv

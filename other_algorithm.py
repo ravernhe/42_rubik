@@ -72,7 +72,7 @@ class Solver:
         print(f"Solved in {len(path) - 1} moves")
         print(f"Time complexity = {self.time}")
         print(f"Space complexity = {self.space}")
-        return
+        return path
 
     def solve(self):
         opened = set()
@@ -92,8 +92,7 @@ class Solver:
             opened.remove(node)
             closed.add(node)
             if node == goal_node:
-                self.print_solution(node)
-                return
+                return self.print_solution(node)
 
             for current in node.nextnodes(self.size, self.heuristic, self.search_type):
                 self.space += 1

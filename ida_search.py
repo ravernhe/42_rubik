@@ -86,7 +86,7 @@ class Solver:
                 print(f"Solved in {len(self.solved_path) - 1} moves")
                 print(f"Time complexity = {self.time}")
                 print(f"Space complexity = {self.space}")
-                return
+                return self.solved_path
             elif i == float("inf"):
                 return None
             threshold = i
