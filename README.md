@@ -7,4 +7,4 @@ Le taquin qui taquine.
 ### Options:  
     -h, --help         show this help message and exit  
     -m MAP, --map MAP  put a valid file  
-    -play, --play      play to solve yourself
+    -p, --play      play to solve yourself
